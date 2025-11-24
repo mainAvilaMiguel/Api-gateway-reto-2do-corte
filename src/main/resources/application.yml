@@ -37,3 +37,5 @@ spring:
               - DELETE
               - OPTIONS
             allowedHeaders: "*"
+jwt:
+  secret: "mi_clave_secreta_super_segura_y_larga_123456"
