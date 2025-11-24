@@ -1,0 +1,43 @@
+server:
+  port: 8080
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false
+              lower-case-service-id: true
+          routes:
+            - id: login_route
+              uri: http://127.0.0.1:8000  
+              predicates:
+                - Path=/LOGINMICROSERVICE/**
+              filters:
+                - StripPrefix=1
+            - id: customer_route
+              uri: lb://USERMGMTMICROSERVICE
+              predicates:
+                - Path=/USERMGMTMICROSERVICE/**
+              filters:
+                - StripPrefix=1
+            - id: order_route
+              uri: lb://ORDER-MICROSERVICE
+              predicates:
+                - Path=/ORDER-MICROSERVICE/**
+              filters:
+                - StripPrefix=1
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: 
+                  - "http://localhost:4200"
+                  - "http://127.0.0.1:4200"
+                allowedMethods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowedHeaders: "*"
